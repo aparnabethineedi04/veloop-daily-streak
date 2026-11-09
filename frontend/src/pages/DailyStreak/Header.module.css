@@ -1,0 +1,21 @@
+.desktop { display: none; }
+.mobile { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.back { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--card-2); color: var(--text); display: grid; place-items: center; }
+.mTitle { display: flex; align-items: center; gap: 6px; font-weight: 800; font-size: 1.15rem; margin: 0; flex: 1; }
+.flame { color: #fb923c; fill: #fb923c33; }
+.gems { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 999px; background: var(--card-2); border: 1px solid var(--line); font-weight: 800; }
+.gemIcon { color: var(--violet); fill: #8b5cf655; }
+
+@media (min-width: 992px) {
+  .mobile { display: none; }
+  .desktop { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 4px 8px 12px; border-bottom: 1px solid rgba(139, 92, 246, 0.18); }
+  .left { display: flex; gap: 14px; align-items: center; }
+  .tile { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; color: var(--violet-soft); background: #1a1235; border: 1px solid var(--line); }
+  .title { margin: 0; font-size: 1.3rem; font-weight: 800; }
+  .sub { margin: 0; color: var(--muted); font-size: 0.92rem; }
+  .badge { display: flex; align-items: center; gap: 12px; padding: 10px 26px 10px 34px; background: linear-gradient(90deg, #2a1556, #170f33); clip-path: polygon(14px 0, 100% 0, 100% 100%, 14px 100%, 0 50%); border-radius: 0 14px 14px 0; }
+  .badgeFlame { color: #fb923c; fill: #fb923c55; }
+  .badgeTitle { font-weight: 800; }
+  .gold { color: var(--gold); }
+  .badgeSub { color: var(--muted); font-size: 0.85rem; }
+}

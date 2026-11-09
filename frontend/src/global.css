@@ -1,0 +1,25 @@
+:root {
+  --bg: #07050f;
+  --card: #0d0a1a;
+  --card-2: #120e24;
+  --line: rgba(139, 92, 246, 0.28);
+  --violet: #8b5cf6;
+  --violet-soft: #b197fc;
+  --gold: #fbbf24;
+  --gold-deep: #f59e0b;
+  --green: #22c55e;
+  --text: #f4f1ff;
+  --muted: #a39cc4;
+  --radius: 16px;
+}
+html, body, #root { min-height: 100%; }
+body {
+  margin: 0;
+  background: radial-gradient(1200px 600px at 50% -10%, #1b1038 0%, var(--bg) 60%) fixed;
+  color: var(--text);
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+img { max-width: 100%; }
+button { font-family: inherit; }
