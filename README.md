@@ -5,45 +5,66 @@ A secure, backend-driven Daily Streak and Rewards feature built using the MERN s
 
 **React controls the presentation. The backend controls the streak.**
 
-- **Live Frontend:** https://veloop-daily-streak-beige.vercel.app
-- **Live Backend:** https://veloop-daily-streak-5xzt.onrender.com
+## Live Application
+
+- **Frontend:** https://veloop-daily-streak-beige.vercel.app
+- **Backend:** https://veloop-daily-streak-5xzt.onrender.com
 - **Backend Health Check:** https://veloop-daily-streak-5xzt.onrender.com/api/health
 
-**Demo Login**
-- Email: `demo@veloop.test`
-- Password: `Demo@1234`
+### Demo Login
+
+- **Email:** `demo@veloop.test`
+- **Password:** `Demo@1234`
 
 ---
 
-## 1. Architecture
+## 1. Project Overview
+
+VELoop Rewards is a seven-day daily streak and reward system. Users can claim rewards according to a backend-controlled schedule.
+
+The backend manages streak progress, claim eligibility, timers, missed-day resets, reward configuration, wallet balances, and transaction records.
+
+The frontend displays the state returned by the backend.
+
+## 2. Technology Stack
+
+- **Frontend:** React.js, Vite, Bootstrap, CSS Modules
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB Atlas
+- **ODM:** Mongoose
+- **Authentication:** JWT
+- **Validation:** Zod
+- **Deployment:** Vercel and Render
+
+## 3. Architecture
 
 ```text
 React (Vite, Bootstrap, CSS Modules)
-             |
-             v
-       Express REST API
-             |
-             v
-          Node.js
-             |
-             v
-       MongoDB (Mongoose)
+                |
+                v
+         Express REST API
+                |
+                v
+             Node.js
+                |
+                v
+        MongoDB (Mongoose)
+```
 
-Backend responsibilities:
+### Backend Responsibilities
+
 - JWT authentication
 - Input validation
 - Rate limiting
 - Streak state management
 - Reward configuration
 - Claim eligibility
-- Wallet and transaction ledger
-```
+- Wallet management
+- Transaction ledger
 
-Everything important, including streak progress, current day, reward eligibility, timer, claim status, missed-day reset, and wallet balance, is calculated and managed by the backend.
+The backend is the source of truth for important reward and streak operations.
 
-The frontend is responsible for displaying the backend response.
-
-## 2. Folder Structure
+## 4. Project Structure
 
 ```text
 veloop-daily-streak/
@@ -55,7 +76,13 @@ veloop-daily-streak/
 └── README.md
 ```
 
-## 3. Installation and Setup
+- `backend/` – Express API, models, services, controllers, routes, and tests.
+- `frontend/` – React application, components, hooks, services, and assets.
+- `docs/` – API, database, security, and testing documentation.
+- `postman/` – Postman API collection.
+- `SETUP_GUIDE.md` – Detailed setup instructions.
+
+## 5. Installation and Setup
 
 Refer to `SETUP_GUIDE.md` for detailed setup instructions.
 
@@ -73,13 +100,23 @@ Refer to `SETUP_GUIDE.md` for detailed setup instructions.
 cd backend
 npm install
 cp .env.example .env
+```
+
+Configure the following values in `backend/.env`:
+
+```env
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+```
+
+Seed the database and start the backend:
+
+```bash
 npm run seed
 npm run dev
 ```
 
-Configure `MONGO_URI` and `JWT_SECRET` in `backend/.env`.
-
-Backend runs locally at:
+Backend local URL:
 
 `http://localhost:5000`
 
@@ -91,30 +128,44 @@ Open a new terminal:
 cd frontend
 npm install
 cp .env.example .env
-npm run dev
 ```
 
-Configure the frontend API URL in `frontend/.env`:
+Configure `frontend/.env`:
 
 ```env
 VITE_API_URL=http://localhost:5000/api
 ```
 
-Frontend runs locally at:
+Start the frontend:
+
+```bash
+npm run dev
+```
+
+Frontend local URL:
 
 `http://localhost:5173`
 
-**Note:** The commands use Git Bash syntax. In Windows PowerShell, use `Copy-Item .env.example .env` instead.
+**Windows PowerShell note:** Use `Copy-Item .env.example .env` instead of `cp .env.example .env`.
 
-## 4. Streak Logic
+## 6. Streak Logic
 
-A **streak cycle** represents one seven-day reward run.
+A streak cycle represents one seven-day reward run.
 
-- Each user has a `StreakCycle` containing claimed days, last claim time, and cycle status.
-- Cycle statuses include `ACTIVE`, `COMPLETED`, and `RESET`.
-- `claimIntervalHours` (default: 24) defines the waiting period between claims.
-- `claimWindowHours` (default: 24) defines the grace period after a reward becomes available.
-- Both settings are stored in `StreakConfig`.
+Each user's `StreakCycle` stores claimed days, last claim time, and cycle status.
+
+Cycle statuses:
+
+- `ACTIVE`
+- `COMPLETED`
+- `RESET`
+
+Configuration:
+
+- `claimIntervalHours` – default waiting period of 24 hours between claims.
+- `claimWindowHours` – default 24-hour grace period after a reward becomes available.
+
+Both settings are stored in `StreakConfig`.
 
 ### Missed-Day Handling
 
@@ -132,15 +183,15 @@ The streak calculation logic is maintained in:
 
 `backend/src/utils/streakState.js`
 
-The frontend displays these card states:
+Frontend card states:
 
 - `CLAIMED`
 - `AVAILABLE`
 - `LOCKED`
 
-Additional card information includes `isToday`, `isNext`, and `nextClaimAt`.
+Additional state information includes `isToday`, `isNext`, and `nextClaimAt`.
 
-## 5. Claim Logic
+## 7. Claim Logic
 
 The reward claim endpoint is:
 
@@ -153,8 +204,8 @@ The claim process follows these steps:
 1. User identity is obtained from the JWT token.
 2. The backend uses server time and recalculates the streak state from the database.
 3. The client-provided day is treated only as an intent and must match the server-calculated day.
-4. The backend checks whether the reward is eligible and has not already been claimed.
-5. An atomic guard ensures that only one simultaneous claim request succeeds.
+4. The backend checks reward eligibility and whether the reward has already been claimed.
+5. An atomic guard protects against simultaneous duplicate claims.
 6. The wallet balance is updated using `$inc`.
 7. A `WalletTransaction` record stores transaction details, including `balanceBefore`, `balanceAfter`, and a transaction reference.
 8. A `StreakClaim` record is created with a unique `userId + cycleId + day` combination.
@@ -164,7 +215,7 @@ An `Idempotency-Key` header is used to handle retries and prevent duplicate rewa
 
 The claim operation uses a MongoDB transaction to maintain consistency across related database updates.
 
-## 6. Timer Architecture
+## 8. Timer Architecture
 
 The backend provides:
 
@@ -173,7 +224,7 @@ The backend provides:
 
 The frontend calculates the countdown using `performance.now()` anchored to the server time.
 
-This prevents users from changing their device clock to manipulate the reward timer.
+This prevents users from manipulating the reward timer by changing their device clock.
 
 When the countdown reaches zero, the frontend requests:
 
@@ -183,7 +234,7 @@ GET /api/daily-streak/status
 
 The Claim Reward button is displayed only when the backend confirms that the reward is claimable.
 
-## 7. Reward System and Wallet
+## 9. Reward System and Wallet
 
 The seven-day reward configuration is maintained in the `StreakReward` collection.
 
@@ -203,7 +254,7 @@ Wallet credit handling:
 
 Reward configuration can be modified through database configuration without changing the frontend presentation code.
 
-## 8. CPA Demo
+## 10. CPA Demo
 
 `CpaDemo.jsx` provides a placeholder screen displaying:
 
@@ -213,7 +264,7 @@ It is shown while the claim request is being processed.
 
 The CPA component does not independently grant rewards. No real advertising network or CPA SDK is integrated in this version.
 
-## 9. User Interface and Responsiveness
+## 11. User Interface and Responsiveness
 
 The application provides responsive layouts for different screen sizes.
 
@@ -233,7 +284,7 @@ UI features include:
 - Subtle floating and glow animations
 - `prefers-reduced-motion` support for accessibility
 
-## 10. Security
+## 12. Security
 
 Security measures implemented include:
 
@@ -251,16 +302,16 @@ Security measures implemented include:
 
 For more information, refer to `docs/SECURITY.md`.
 
-## 11. Testing
+## 13. Testing
 
-Backend unit tests:
+### Backend Unit Tests
 
 ```bash
 cd backend
 npm test
 ```
 
-Backend E2E tests:
+### Backend E2E Tests
 
 ```bash
 npm run test:e2e
@@ -270,8 +321,8 @@ The E2E tests require the backend server to be running.
 
 ### Test Results
 
-- Backend unit tests: **10/10 passed**
-- Backend E2E tests: **18/18 passed**
+- **Backend unit tests:** 10/10 passed
+- **Backend E2E tests:** 18/18 passed
 
 The Postman collection is available at:
 
@@ -279,19 +330,21 @@ The Postman collection is available at:
 
 For detailed testing information, refer to `docs/TESTING.md`.
 
-## 12. Deployment
+## 14. Deployment
 
 The application uses the following deployment architecture:
 
-- **Database:** MongoDB Atlas
-- **Backend:** Render
-- **Frontend:** Vercel
+| Component | Platform |
+|---|---|
+| Database | MongoDB Atlas |
+| Backend | Render |
+| Frontend | Vercel |
 
 The backend and frontend are configured to communicate through the deployed API.
 
 For setup and deployment instructions, refer to `SETUP_GUIDE.md`.
 
-## 13. Known Limitations
+## 15. Known Limitations
 
 - The CPA step is currently a visual placeholder. A real CPA or advertising network integration has not been added.
 - Gift-card rewards are credited as INR wallet balance; actual voucher payout is not implemented.
@@ -299,6 +352,8 @@ For setup and deployment instructions, refer to `SETUP_GUIDE.md`.
 - The Render free tier may sleep when idle, so the first request after inactivity can take longer to respond.
 
 ---
+
+## Project Information
 
 **Project:** VELoop Rewards – Daily Streak System
 
