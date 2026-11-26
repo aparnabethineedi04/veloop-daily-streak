@@ -1,12 +1,8 @@
-export function rewardValue(r) {
-  return r.currency === 'INR' ? `₹${r.amount}` : `+${r.amount}`;
+﻿export function rewardValue(r) {
+  return r.currency === 'INR' ? `Γé╣${r.amount}` : `+${r.amount}`;
 }
 export function rewardShort(r) {
-<<<<<<< HEAD
-  return r.currency === 'INR' ? `₹${r.amount} Gift Card` : `+${r.amount} VEs`;
-=======
-  return r.currency === 'INR' ? `₹${r.amount}` : `+${r.amount} VEs`;
->>>>>>> origin/main
+  return r.currency === 'INR' ? `Γé╣${r.amount} Gift Card` : `+${r.amount} VEs`;
 }
 export function pad(n) {
   return String(n).padStart(2, '0');

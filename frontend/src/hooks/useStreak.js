@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+﻿import { useCallback, useEffect, useRef, useState } from 'react';
 import * as streakApi from '../services/streakApi.js';
 import { toApiError } from '../services/api.js';
 
@@ -8,11 +8,7 @@ export default function useStreak() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-<<<<<<< HEAD
   const [claimPhase, setClaimPhase] = useState('idle'); // idle | processing | reveal
-=======
-  const [claimPhase, setClaimPhase] = useState('idle'); // idle | processing | success
->>>>>>> origin/main
   const [claimError, setClaimError] = useState(null);
   const [lastClaim, setLastClaim] = useState(null);
   const busy = useRef(false);
@@ -33,11 +29,7 @@ export default function useStreak() {
     load();
   }, [load]);
 
-<<<<<<< HEAD
   // Another tab may have claimed: always re-sync from the backend when this tab is focused again.
-=======
-  // Another tab may have claimed: always re-sync from the backend when the tab is focused again.
->>>>>>> origin/main
   useEffect(() => {
     const onVisible = () => document.visibilityState === 'visible' && load(true);
     document.addEventListener('visibilitychange', onVisible);
@@ -66,7 +58,6 @@ export default function useStreak() {
         new Promise((r) => setTimeout(r, MIN_CPA_MS)),
       ]);
       setLastClaim(result.claim);
-<<<<<<< HEAD
       await load(true); // refresh everything from the backend (never trust local assumptions)
       setClaimPhase('reveal');
     } catch (e) {
@@ -74,16 +65,6 @@ export default function useStreak() {
       setClaimPhase('idle');
       await load(true);
     } finally {
-=======
-      setClaimPhase('success');
-      await new Promise((r) => setTimeout(r, 1200));
-      await load(true); // refresh everything from the backend
-    } catch (e) {
-      setClaimError(toApiError(e));
-      await load(true);
-    } finally {
-      setClaimPhase('idle');
->>>>>>> origin/main
       busy.current = false;
     }
   }, [load]);
@@ -91,10 +72,7 @@ export default function useStreak() {
   return {
     data, loading, error, claimPhase, claimError, lastClaim,
     reload: () => load(false), claim, refreshStatus,
-<<<<<<< HEAD
     dismissReveal: () => setClaimPhase('idle'),
-=======
->>>>>>> origin/main
     dismissClaimError: () => setClaimError(null),
   };
 }

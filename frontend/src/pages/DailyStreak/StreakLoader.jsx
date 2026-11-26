@@ -1,4 +1,4 @@
-import logo from '../../assets/logo-vr.png';
+﻿import logo from '../../assets/logo-vr.png';
 import styles from './States.module.css';
 
 export default function StreakLoader() {
@@ -8,10 +8,7 @@ export default function StreakLoader() {
         <span className={styles.ring} />
         <img className={styles.logo} src={logo} alt="VELoop" />
       </div>
-<<<<<<< HEAD
       <div className={styles.loadTitle}>VELoop Rewards</div>
-=======
->>>>>>> origin/main
       <div className={styles.loadText}>Loading your streak...</div>
     </div>
   );

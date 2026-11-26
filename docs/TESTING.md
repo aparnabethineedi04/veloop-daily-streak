@@ -1,4 +1,4 @@
-# Testing
+﻿# Testing
 ## Automated
 1. `cd backend && npm test` - 10 unit tests of the pure streak logic (no database).
 2. With the backend running and seeded (and `ALLOW_DEV_ROUTES=true` in `.env`): `npm run test:e2e`.
@@ -23,7 +23,6 @@
 
 ## Missed-day test (documented)
 Day 1 claimed -> `POST /dev/rewind {"hours": 25}` -> Day 2 claimed -> `POST /dev/rewind {"hours": 60}` -> `GET /daily-streak` returns `currentDay: 1`, `currentStreak: 0`, `lastReset.previousStreak: 2`; a `STREAK_RESET` audit log is written.
-<<<<<<< HEAD
 
 ## UI / button checklist
 | Control | Expected |
@@ -39,5 +38,3 @@ Day 1 claimed -> `POST /dev/rewind {"hours": 25}` -> Day 2 claimed -> `POST /dev
 | Streak-at-risk line (divider) | Appears only when a reward is claimable and a streak is running; counts down to the backend deadline; at zero the page re-checks the backend |
 | Claim Day 7 | Reveal modal says "Ultimate Reward unlocked!" |
 | Header VEs balance | Briefly scales up when the balance changes |
-=======
->>>>>>> origin/main

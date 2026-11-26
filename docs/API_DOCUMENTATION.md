@@ -1,4 +1,4 @@
-# API Documentation
+﻿# API Documentation
 Base URL: `http://localhost:5000/api` (set `VITE_API_URL` in the frontend). Protected routes need `Authorization: Bearer <token>`.
 All errors: `{ "success": false, "code": "...", "message": "..." }` (no raw database errors).
 
@@ -26,10 +26,7 @@ Full page state.
   "wallet": { "VES": 125, "INR": 0 }
 }
 ```
-<<<<<<< HEAD
 `streak.expiresAt` = when the running streak would be lost if today is not claimed (null otherwise).
-=======
->>>>>>> origin/main
 `streak.status`: `FRESH | FRESH_NEXT_CYCLE | MISSED | READY | WAITING | COMPLETE_WAITING`. Card `status`: `CLAIMED | AVAILABLE | LOCKED` (`isToday` = actionable day, `isNext` = waiting day with countdown).
 A detected missed streak is persisted (cycle -> `RESET`) when this endpoint is read.
 

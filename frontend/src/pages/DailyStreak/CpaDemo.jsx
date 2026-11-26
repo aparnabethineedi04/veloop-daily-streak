@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-import { useEffect } from 'react';
+﻿import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Check, Sparkles } from 'lucide-react';
 import logo from '../../assets/logo-vr.png';
@@ -22,24 +21,10 @@ export default function CpaDemo({ phase, claim, assetType, isUltimate, streak, o
     return () => window.removeEventListener('keydown', onKey);
   }, [phase, onClose]);
 
-=======
-import { AnimatePresence, motion } from 'framer-motion';
-import { Check } from 'lucide-react';
-import logo from '../../assets/logo-vr.png';
-import styles from './States.module.css';
-
-/**
- * PLACEHOLDER for the future CPA / ad step. It never grants anything:
- * the reward is granted only by the backend claim endpoint.
- * The VELoop team will replace this component with the real integration.
- */
-export default function CpaDemo({ phase }) {
->>>>>>> origin/main
   return (
     <AnimatePresence>
       {phase !== 'idle' && (
         <motion.div className={styles.overlay} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-<<<<<<< HEAD
           <motion.div
             key={phase}
             className={styles.modal}
@@ -53,13 +38,6 @@ export default function CpaDemo({ phase }) {
               <>
                 <span className={styles.adTag}>Advertisement / Reward Verification</span>
                 <div className={styles.logoWrap}>
-=======
-          <motion.div className={styles.modal} initial={{ scale: 0.92, y: 12 }} animate={{ scale: 1, y: 0 }} role="dialog" aria-live="polite">
-            {phase === 'processing' ? (
-              <>
-                <span className={styles.adTag}>Advertisement / Reward Verification</span>
-                <div className={styles.logoWrap} style={{ margin: '0 auto' }}>
->>>>>>> origin/main
                   <span className={styles.ring} />
                   <img className={styles.logo} src={logo} alt="" />
                 </div>
@@ -67,7 +45,6 @@ export default function CpaDemo({ phase }) {
                 <p className={styles.mText}>Please wait...</p>
                 <div className={styles.progress}><i /></div>
               </>
-<<<<<<< HEAD
             )}
 
             {phase === 'reveal' && claim && (
@@ -85,7 +62,7 @@ export default function CpaDemo({ phase }) {
                   transition={{ type: 'spring', stiffness: 220, damping: 14, delay: 0.1 }}
                 />
                 <div className={styles.revealValue}>
-                  {claim.reward.currency === 'INR' ? '₹' : '+'}<CountUp value={claim.reward.amount} duration={0.8} />
+                  {claim.reward.currency === 'INR' ? 'Γé╣' : '+'}<CountUp value={claim.reward.amount} duration={0.8} />
                 </div>
                 <div className={styles.revealSub}>
                   {claim.reward.currency === 'INR' ? 'Amazon Gift Card added to your wallet' : 'VEs added to your wallet'}
@@ -93,13 +70,6 @@ export default function CpaDemo({ phase }) {
                 <div className={styles.revealStreak}><Sparkles size={14} /> {isUltimate ? 'Perfect week completed!' : `${streak.currentStreak} Day Streak`}</div>
                 <button className={styles.cta} onClick={onClose}>Awesome!</button>
                 <div className={styles.ref}>Ref: {claim.referenceId}</div>
-=======
-            ) : (
-              <>
-                <div className={styles.okIcon}><Check size={34} strokeWidth={3} /></div>
-                <h3 className={styles.mTitle}>Reward claimed!</h3>
-                <p className={styles.mText}>Updating your streak...</p>
->>>>>>> origin/main
               </>
             )}
           </motion.div>
@@ -108,7 +78,4 @@ export default function CpaDemo({ phase }) {
     </AnimatePresence>
   );
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/main

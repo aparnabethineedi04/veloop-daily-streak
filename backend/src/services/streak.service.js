@@ -1,3 +1,4 @@
+
 const mongoose = require('mongoose');
 const StreakCycle = require('../models/StreakCycle');
 const StreakClaim = require('../models/StreakClaim');
@@ -10,31 +11,41 @@ const txService = require('./transaction.service');
 const audit = require('./audit.service');
 
 async function latestCycle(userId, session) {
-  return StreakCycle.findOne({ userId }).sort({ cycleNumber: -1 }).session(session || null);
+  return StreakCycle.findOne({ userId })
+    .sort({ cycleNumber: -1 })
+    .session(session || null);
 }
 
 /** Persist a detected missed streak exactly once (guarded by status ACTIVE). */
 async function resetStreakIfMissed(userId, cycle, state, now, ip) {
   if (!state.needsReset || !cycle) return false;
+
   const res = await StreakCycle.updateOne(
     { _id: cycle._id, status: 'ACTIVE' },
     { $set: { status: 'RESET', resetAt: now } }
   );
+
   if (res.modifiedCount === 1) {
     await audit.log(
       userId,
       'STREAK_RESET',
-      { cycleId: cycle._id, previousStreak: cycle.claimedCount, missedDay: cycle.claimedCount + 1 },
+      {
+        cycleId: cycle._id,
+        previousStreak: cycle.claimedCount,
+        missedDay: cycle.claimedCount + 1,
+      },
       ip
     );
     return true;
   }
+
   return false;
 }
 
 /** Full page payload: everything React renders comes from here. */
 async function getStreak(userId, ip) {
   const now = new Date();
+
   const [config, rewards, cycle, wallet] = await Promise.all([
     rewardService.getConfig(),
     rewardService.getActiveRewards(),
@@ -47,7 +58,9 @@ async function getStreak(userId, ip) {
 
   const cards = buildCards(rewards, state);
   const nextRewardCard = cards.find((c) => c.day === state.currentDay);
-  const ultimate = rewards.find((r) => r.metadata && r.metadata.isUltimate) || rewards[rewards.length - 1];
+  const ultimate =
+    rewards.find((r) => r.metadata && r.metadata.isUltimate) ||
+    rewards[rewards.length - 1];
 
   return {
     success: true,
@@ -59,13 +72,19 @@ async function getStreak(userId, ip) {
       totalRewards: state.totalDays,
       status: state.mode,
       claimable: state.claimable,
-      nextClaimAt: state.nextClaimAt ? state.nextClaimAt.toISOString() : null,
+      nextClaimAt: state.nextClaimAt
+        ? state.nextClaimAt.toISOString()
+        : null,
       remainingMs: state.remainingMs,
-<<<<<<< HEAD
+
       // Only while a claim is available AND a streak is running: the moment it would be lost.
-      expiresAt: state.claimable && state.currentStreak > 0 && state.missedAt ? state.missedAt.toISOString() : null,
-=======
->>>>>>> origin/main
+      expiresAt:
+        state.claimable &&
+          state.currentStreak > 0 &&
+          state.missedAt
+          ? state.missedAt.toISOString()
+          : null,
+
       cycleNumber: cycle ? cycle.cycleNumber : 1,
       lastReset: state.lastReset,
     },
@@ -74,13 +93,13 @@ async function getStreak(userId, ip) {
       checkedIn: state.checkedIn,
       nextReward: nextRewardCard
         ? {
-            day: nextRewardCard.day,
-            amount: nextRewardCard.reward.amount,
-            currency: nextRewardCard.reward.currency,
-            type: nextRewardCard.reward.type,
-            title: nextRewardCard.reward.title,
-            subtitle: nextRewardCard.reward.subtitle,
-          }
+          day: nextRewardCard.day,
+          amount: nextRewardCard.reward.amount,
+          currency: nextRewardCard.reward.currency,
+          type: nextRewardCard.reward.type,
+          title: nextRewardCard.reward.title,
+          subtitle: nextRewardCard.reward.subtitle,
+        }
         : null,
     },
     ultimateReward: {
@@ -101,6 +120,7 @@ async function getStreak(userId, ip) {
 /** Lightweight endpoint used by the frontend when its countdown reaches ~0. */
 async function getStatus(userId, ip) {
   const full = await getStreak(userId, ip);
+
   return {
     success: true,
     serverTime: full.serverTime,
@@ -111,10 +131,16 @@ async function getStatus(userId, ip) {
 
 async function getHistory(userId, { page = 1, limit = 20 }) {
   const skip = (page - 1) * limit;
+
   const [items, total] = await Promise.all([
-    StreakClaim.find({ userId }).sort({ claimedAt: -1 }).skip(skip).limit(limit).lean(),
+    StreakClaim.find({ userId })
+      .sort({ claimedAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean(),
     StreakClaim.countDocuments({ userId }),
   ]);
+
   return {
     success: true,
     page,
@@ -135,33 +161,52 @@ async function getHistory(userId, { page = 1, limit = 20 }) {
 
 /** The single atomic claim operation. Everything is derived on the server. */
 async function doClaim({ userId, requestedDay, idempotencyKey }) {
-  const [config, rewards] = await Promise.all([rewardService.getConfig(), rewardService.getActiveRewards()]);
+  const [config, rewards] = await Promise.all([
+    rewardService.getConfig(),
+    rewardService.getActiveRewards(),
+  ]);
 
   return runInTransaction(async (session) => {
     const now = new Date();
     const cycle = await latestCycle(userId, session);
     const state = computeState({ cycle, rewards, config, now });
 
-    // A client-supplied day is only an *intent*; it must match what the server computed.
+    // A client-supplied day is only an intent; it must match the server state.
     if (requestedDay != null && requestedDay !== state.currentDay) {
-      throw new AppError(400, 'INVALID_DAY', 'That reward is not your current streak day.', {
-        invalid: true,
-      });
+      throw new AppError(
+        400,
+        'INVALID_DAY',
+        'That reward is not your current streak day.',
+        { invalid: true }
+      );
     }
+
     if (!state.claimable) {
-      const nextClaimAt = state.nextClaimAt ? state.nextClaimAt.toISOString() : null;
-      throw new AppError(403, 'NOT_AVAILABLE_YET', 'Your next reward is not available yet.', {
-        nextClaimAt,
-        serverTime: now.toISOString(),
-      });
+      const nextClaimAt = state.nextClaimAt
+        ? state.nextClaimAt.toISOString()
+        : null;
+
+      throw new AppError(
+        403,
+        'NOT_AVAILABLE_YET',
+        'Your next reward is not available yet.',
+        {
+          nextClaimAt,
+          serverTime: now.toISOString(),
+        }
+      );
     }
 
     const day = state.currentDay;
     const reward = rewards.find((r) => r.day === day);
-    if (!reward) throw new AppError(500, 'CONFIG_MISSING', 'Reward is not configured.');
+
+    if (!reward) {
+      throw new AppError(500, 'CONFIG_MISSING', 'Reward is not configured.');
+    }
 
     // Close a missed cycle, then open a new one when required.
     let active = cycle;
+
     if (state.needsReset && cycle) {
       await StreakCycle.updateOne(
         { _id: cycle._id, status: 'ACTIVE' },
@@ -169,16 +214,26 @@ async function doClaim({ userId, requestedDay, idempotencyKey }) {
         { session }
       );
     }
+
     if (state.needsNewCycle) {
       const [created] = await StreakCycle.create(
-        [{ userId, cycleNumber: (cycle ? cycle.cycleNumber : 0) + 1, status: 'ACTIVE', startedAt: now }],
+        [
+          {
+            userId,
+            cycleNumber: (cycle ? cycle.cycleNumber : 0) + 1,
+            status: 'ACTIVE',
+            startedAt: now,
+          },
+        ],
         { session }
       );
+
       active = created;
     }
 
     // Atomic guard: only succeeds if nothing changed since we read the state.
     const isLast = day === rewards.length;
+
     const advanced = await StreakCycle.findOneAndUpdate(
       {
         _id: active._id,
@@ -197,8 +252,13 @@ async function doClaim({ userId, requestedDay, idempotencyKey }) {
       },
       { new: true, session }
     );
+
     if (!advanced) {
-      throw new AppError(409, 'ALREADY_CLAIMED', 'This reward has already been claimed.');
+      throw new AppError(
+        409,
+        'ALREADY_CLAIMED',
+        'This reward has already been claimed.'
+      );
     }
 
     // Wallet credit + ledger entry.
@@ -208,7 +268,9 @@ async function doClaim({ userId, requestedDay, idempotencyKey }) {
       reward.amount,
       session
     );
+
     const referenceId = txService.newReferenceId();
+
     const tx = await txService.createCredit(
       {
         userId,
@@ -248,52 +310,115 @@ async function doClaim({ userId, requestedDay, idempotencyKey }) {
       { session }
     );
 
-    return { claim, tx, wasReset: state.needsReset, previousStreak: cycle ? cycle.claimedCount : 0 };
+    return {
+      claim,
+      tx,
+      wasReset: state.needsReset,
+      previousStreak: cycle ? cycle.claimedCount : 0,
+    };
   });
 }
 
-async function claimReward(userId, { requestedDay, idempotencyKey, ip, ignoredFields = [] }) {
-  await audit.log(userId, 'STREAK_CLAIM_REQUEST', { requestedDay, idempotencyKey, ignoredFields }, ip);
+async function claimReward(
+  userId,
+  { requestedDay, idempotencyKey, ip, ignoredFields = [] }
+) {
+  await audit.log(
+    userId,
+    'STREAK_CLAIM_REQUEST',
+    { requestedDay, idempotencyKey, ignoredFields },
+    ip
+  );
 
   // Idempotent replay: same key from the same user returns the original result.
   if (idempotencyKey) {
-    const existing = await StreakClaim.findOne({ userId, idempotencyKey }).lean();
+    const existing = await StreakClaim.findOne({
+      userId,
+      idempotencyKey,
+    }).lean();
+
     if (existing) {
-      await audit.log(userId, 'DUPLICATE_CLAIM', { idempotencyKey, day: existing.day }, ip);
+      await audit.log(
+        userId,
+        'DUPLICATE_CLAIM',
+        { idempotencyKey, day: existing.day },
+        ip
+      );
+
       const state = await getStreak(userId, ip);
-      return { ...state, claim: formatClaim(existing), idempotentReplay: true };
+
+      return {
+        ...state,
+        claim: formatClaim(existing),
+        idempotentReplay: true,
+      };
     }
   }
 
   try {
-    const result = await doClaim({ userId, requestedDay, idempotencyKey });
+    const result = await doClaim({
+      userId,
+      requestedDay,
+      idempotencyKey,
+    });
+
     if (result.wasReset) {
-      await audit.log(userId, 'STREAK_RESET', { previousStreak: result.previousStreak }, ip);
+      await audit.log(
+        userId,
+        'STREAK_RESET',
+        { previousStreak: result.previousStreak },
+        ip
+      );
     }
+
     await audit.log(
       userId,
       'STREAK_CLAIM_SUCCESS',
-      { day: result.claim.day, referenceId: result.claim.referenceId, amount: result.tx.amount },
+      {
+        day: result.claim.day,
+        referenceId: result.claim.referenceId,
+        amount: result.tx.amount,
+      },
       ip
     );
+
     const state = await getStreak(userId, ip);
-    return { ...state, claim: formatClaim(result.claim), idempotentReplay: false };
+
+    return {
+      ...state,
+      claim: formatClaim(result.claim),
+      idempotentReplay: false,
+    };
   } catch (err) {
     let appErr = err;
+
     // Unique-index hit (concurrent or repeated claim) -> clean duplicate response.
     if (err && (err.code === 11000 || /E11000/.test(err.message || ''))) {
-      appErr = new AppError(409, 'ALREADY_CLAIMED', 'This reward has already been claimed.');
+      appErr = new AppError(
+        409,
+        'ALREADY_CLAIMED',
+        'This reward has already been claimed.'
+      );
     }
+
     if (appErr instanceof AppError) {
       const event =
         appErr.code === 'ALREADY_CLAIMED'
           ? 'DUPLICATE_CLAIM'
           : appErr.code === 'INVALID_DAY'
-          ? 'INVALID_CLAIM'
-          : 'STREAK_CLAIM_REJECTED';
-      await audit.log(userId, event, { code: appErr.code, requestedDay }, ip);
+            ? 'INVALID_CLAIM'
+            : 'STREAK_CLAIM_REJECTED';
+
+      await audit.log(
+        userId,
+        event,
+        { code: appErr.code, requestedDay },
+        ip
+      );
+
       throw appErr;
     }
+
     throw err;
   }
 }
@@ -309,4 +434,10 @@ function formatClaim(c) {
   };
 }
 
-module.exports = { getStreak, getStatus, getHistory, claimReward, mongoose };
+module.exports = {
+  getStreak,
+  getStatus,
+  getHistory,
+  claimReward,
+  mongoose,
+};
