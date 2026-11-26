@@ -1,0 +1,450 @@
+{
+  "info": {
+    "name": "VELoop Daily Streak",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Register (new user)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Postman User\",\n  \"email\": \"postman{{$timestamp}}@test.dev\",\n  \"password\": \"Passw0rd!\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const j=pm.response.json(); if(j.token){pm.collectionVariables.set('token', j.token);}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Login (demo user)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"demo@veloop.test\",\n  \"password\": \"Demo@1234\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const j=pm.response.json(); if(j.token){pm.collectionVariables.set('token', j.token);}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Get streak",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/daily-streak",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "daily-streak"
+          ]
+        }
+      }
+    },
+    {
+      "name": "4. Get status",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/daily-streak/status",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "daily-streak",
+            "status"
+          ]
+        }
+      }
+    },
+    {
+      "name": "5. Claim Day 1 (or current day)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/daily-streak/claim",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "daily-streak",
+            "claim"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        }
+      }
+    },
+    {
+      "name": "6. Get updated streak",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/daily-streak",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "daily-streak"
+          ]
+        }
+      }
+    },
+    {
+      "name": "7. Claim again -> locked/duplicate (negative)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/daily-streak/claim",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "daily-streak",
+            "claim"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        }
+      }
+    },
+    {
+      "name": "8. Claim Day 2 (after 24h or dev rewind)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/daily-streak/claim",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "daily-streak",
+            "claim"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"day\": 2\n}"
+        }
+      }
+    },
+    {
+      "name": "9. History",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/daily-streak/history",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "daily-streak",
+            "history"
+          ]
+        }
+      }
+    },
+    {
+      "name": "10. Wallet",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/wallet",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "wallet"
+          ]
+        }
+      }
+    },
+    {
+      "name": "N1. Fake day 7 (negative)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/daily-streak/claim",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "daily-streak",
+            "claim"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"day\": 7\n}"
+        }
+      }
+    },
+    {
+      "name": "N2. Fake reward/streak/user (negative - ignored)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/daily-streak/claim",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "daily-streak",
+            "claim"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"reward\": 1000000,\n  \"amount\": 1000000,\n  \"currency\": \"INR\",\n  \"streak\": 7,\n  \"userId\": \"anotherUser\"\n}"
+        }
+      }
+    },
+    {
+      "name": "N3. No token (negative)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/daily-streak",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "daily-streak"
+          ]
+        }
+      }
+    },
+    {
+      "name": "DEV. Rewind 25h (ALLOW_DEV_ROUTES=true)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/dev/rewind",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "dev",
+            "rewind"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hours\": 25\n}"
+        }
+      }
+    },
+    {
+      "name": "DEV. Rewind 60h -> missed day",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/dev/rewind",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "dev",
+            "rewind"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hours\": 60\n}"
+        }
+      }
+    }
+  ]
+}

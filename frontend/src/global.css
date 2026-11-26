@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  /* ===== VELoop COLOR PALETTE ===== */
+
+  --bg: #010207;
+  --frame: #03001B;
+  --surface-dark: #070713;
+  --page: #0A0B1F;
+  --reward-surface: #0C0A22;
+  --divider: #16142C;
+
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-2: rgba(255, 255, 255, 0.07);
+  --line: rgba(255, 255, 255, 0.09);
+  --line-violet: rgba(167, 139, 250, 0.32);
+
+  /* ===== ACCENT COLORS ===== */
+
+  --violet: #8B5CF6;
+  --violet-soft: #B9A5FF;
+
+  --gold: #F7B928;
+  --gold-soft: #FFD98A;
+  --gold-grad: linear-gradient(180deg,
+      #FFD873 0%,
+      #F5A70F 100%);
+
+  --green: #34D399;
+
+  /* ===== TEXT COLORS ===== */
+
+  --text: #F6F3FF;
+  --muted: #A59FC2;
+
+  /* ===== TYPOGRAPHY ===== */
+
+  --font-display: 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* ===== OTHER ===== */
+
+  --radius: 20px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ===== RESET ===== */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 400;
+
+  background: linear-gradient(180deg,
+      #03020A 0%,
+      #05040D 45%,
+      #03020A 100%);
+
+  background-attachment: fixed;
+  overflow-x: hidden;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===== GLOBAL TYPOGRAPHY ===== */
+
+#root,
+#root button,
+#root input,
+#root textarea,
+#root select {
+  font-family: 'Inter', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* ===== IMAGES ===== */
+
+img {
+  max-width: 100%;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ===== SCROLLBAR ===== */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #03020A;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #16142C;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #282044;
+}
+
+/* ===== SELECTION ===== */
+
+::selection {
+  background: rgba(139, 92, 246, 0.35);
+  color: #FFFFFF;
+}

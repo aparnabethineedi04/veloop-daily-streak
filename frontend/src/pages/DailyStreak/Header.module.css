@@ -1,0 +1,25 @@
+.mobile { display: flex; align-items: center; gap: 12px; }
+.back { flex: none; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: #0d0a27; border: 1px solid #2b2152; transition: background 0.2s, transform 0.2s; }
+.back:hover { background: #17113a; transform: translateX(-2px); }
+.mTitle { flex: 1; margin: 0; display: flex; align-items: center; gap: 6px; font-size: 1.12rem; font-weight: 700; }
+.flame { width: 20px; height: 24px; object-fit: contain; animation: flick 2.6s ease-in-out infinite; transform-origin: 50% 90%; }
+@keyframes flick { 0%, 100% { transform: scale(1) rotate(0); } 35% { transform: scale(1.1) rotate(-4deg); } 65% { transform: scale(0.96) rotate(3deg); } }
+@media (prefers-reduced-motion: reduce) { .flame, .badgeFlame { animation: none; } }
+.gems { display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border-radius: 999px; font-weight: 700; background: #0d0a27; border: 1px solid #2b2152; }
+.gemIcon { width: 20px; height: 20px; object-fit: contain; }
+.desktop { display: none; }
+@media (min-width: 1024px) {
+  .mobile { display: none; }
+  .desktop { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 22px; background: linear-gradient(180deg, #08051a, #060315); border-bottom: 1px solid rgba(139, 92, 246, 0.22); }
+  .left { display: flex; align-items: center; gap: 14px; }
+  .tile { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: #150e33; border: 1px solid rgba(139, 92, 246, 0.35); }
+  .tile img { width: 28px; height: 28px; object-fit: contain; }
+  .title { margin: 0; font-size: 1.35rem; font-weight: 700; }
+  .sub { margin: 0; color: #b5aed3; font-size: 0.92rem; }
+  .badge { display: flex; align-items: center; gap: 12px; padding: 10px 32px 10px 40px; margin: -14px -22px -14px 0; background: linear-gradient(90deg, #2b1560, #170c38); clip-path: polygon(22px 0, 100% 0, 100% 100%, 22px 100%, 0 50%); }
+  .badgeFlame { width: 36px; height: 44px; object-fit: contain; animation: flick 2.6s ease-in-out infinite; transform-origin: 50% 90%; }
+  .badgeTitle { font-weight: 700; font-size: 1.05rem; }
+  .gold { color: #ffc83d; }
+  .badgeSub { color: #c4bde0; font-size: 0.9rem; }
+}
+.header { display: block; }

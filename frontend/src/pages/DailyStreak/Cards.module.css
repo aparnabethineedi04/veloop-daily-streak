@@ -1,0 +1,858 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 8px;
+}
+
+.grid>* {
+  grid-column: span 3;
+}
+
+.grid> :nth-child(n + 5) {
+  grid-column: span 4;
+}
+
+/* ===== BASE REWARD CARD ===== */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 3px;
+  padding: 8px 6px;
+  min-width: 0;
+  border-radius: 12px;
+
+  background:
+    linear-gradient(145deg, rgba(23, 16, 44, .42), transparent 38%),
+    linear-gradient(180deg, #070510 0%, #03020a 100%);
+
+  border: 1px solid #1a1532;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .025),
+    inset 0 -8px 18px rgba(0, 0, 0, .18);
+
+  transition:
+    transform .3s ease,
+    border-color .3s ease,
+    box-shadow .3s ease,
+    background .3s ease;
+}
+
+@media (hover: hover) {
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(139, 92, 246, .35);
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, .035),
+      0 8px 24px rgba(0, 0, 0, .4);
+  }
+}
+
+/* ===== CARD HEADER ===== */
+
+.top {
+  width: 100%;
+  min-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px;
+}
+
+.day {
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: .66rem;
+  font-weight: 700;
+  color: #f4f0ff;
+  background: #15102b;
+  white-space: nowrap;
+}
+
+.tag {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: .58rem;
+  font-weight: 700;
+  color: #e9e0ff;
+  background: #301d65;
+  white-space: nowrap;
+}
+
+.tagGold {
+  color: #231500;
+  background: linear-gradient(180deg, #ffd24a, #f5a800);
+}
+
+.check {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #052e1c;
+  background: #22c55e;
+}
+
+.tab {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 2px 9px 3px 10px;
+  border-radius: 0 11px 0 9px;
+  font-size: .62rem;
+  font-weight: 800;
+  color: #231500;
+  background: linear-gradient(180deg, #ffd24a, #f5a800);
+}
+
+/* ===== REWARD IMAGES ===== */
+
+.imgBox {
+  height: 50px;
+  display: grid;
+  place-items: center;
+}
+
+.img {
+  max-height: 50px;
+  max-width: 80%;
+  object-fit: contain;
+
+  filter:
+    drop-shadow(0 8px 10px rgba(0, 0, 0, .55)) drop-shadow(0 2px 2px rgba(255, 190, 40, .10));
+
+  transition:
+    transform .4s var(--ease),
+    filter .4s ease;
+}
+
+.imgCard {
+  max-height: 42px;
+}
+
+@media (hover: hover) {
+  .card:hover .img {
+    transform: scale(1.08) rotate(-2deg);
+  }
+}
+
+/* ===== CARD TEXT ===== */
+
+.name {
+  font-size: .62rem;
+  font-weight: 700;
+  color: #f4f0ff;
+  margin-top: 2px;
+}
+
+.value {
+  font-size: 1.1rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #8f5cf6;
+}
+
+.sub {
+  font-size: .52rem;
+  color: #a9a2c8;
+  min-height: 1.1em;
+  margin-bottom: 4px;
+}
+
+/* ===== BUTTONS ===== */
+
+.btn,
+.btnClaim {
+  margin-top: auto;
+  width: 100%;
+  height: 26px;
+  border-radius: 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: .6rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.btnLocked {
+  color: #71658f;
+  background: linear-gradient(180deg, #0b081c, #070510);
+  border: 1px solid #1b1534;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .025);
+}
+
+.btnClaimed {
+  color: #34d399;
+  background: linear-gradient(180deg, #052817, #03170e);
+  border: 1px solid #15783d;
+
+  box-shadow:
+    inset 0 1px 0 rgba(52, 211, 153, .12),
+    inset 0 -3px 8px rgba(0, 0, 0, .25);
+}
+
+.okDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #04210f;
+  background: #34d399;
+}
+
+/* ===== CLAIM BUTTON ===== */
+
+.btnClaim {
+  position: relative;
+  overflow: hidden;
+  border: 0;
+  cursor: pointer;
+  color: #231500;
+
+  background: linear-gradient(180deg,
+      #ffd95a 0%,
+      #ffc328 45%,
+      #e9a000 100%);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .35),
+    inset 0 -3px 0 rgba(151, 93, 0, .2),
+    0 4px 12px rgba(245, 168, 0, .18);
+
+  transition:
+    transform .2s,
+    box-shadow .2s;
+}
+
+.btnClaim::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(110deg,
+      transparent 35%,
+      rgba(255, 255, 255, .45) 50%,
+      transparent 65%);
+
+  transform: translateX(-120%);
+  animation: sweep 3.6s ease-in-out infinite;
+}
+
+.btnClaim:hover:not(:disabled) {
+  transform: translateY(-1px);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .4),
+    0 6px 18px rgba(245, 168, 0, .32);
+}
+
+.btnClaim:disabled {
+  opacity: .65;
+  cursor: wait;
+}
+
+@keyframes sweep {
+
+  0%,
+  55% {
+    transform: translateX(-120%);
+  }
+
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+/* =================================================
+   DAY 1 - CLAIMED - DARK EMERALD EDGE
+================================================= */
+
+.claimed {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  border-color: rgba(0, 105, 48, .72) !important;
+
+  background:
+    radial-gradient(ellipse 100% 75% at 0% 50%,
+      rgba(0, 145, 75, .055) 0%,
+      rgba(0, 100, 50, .018) 20%,
+      transparent 44%),
+    radial-gradient(ellipse 100% 75% at 100% 50%,
+      rgba(0, 115, 55, .035) 0%,
+      transparent 34%),
+    linear-gradient(160deg, #070510 0%, #030208 100%) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(80, 180, 120, .045),
+    inset 0 -12px 24px rgba(0, 0, 0, .4),
+    0 0 0 1px rgba(0, 110, 50, .025),
+    0 0 5px rgba(0, 130, 55, .045) !important;
+}
+
+/* Dark emerald perimeter reflection */
+
+.claimed::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+
+  background:
+    linear-gradient(90deg,
+      rgba(0, 180, 90, .10) 0%,
+      transparent 7%,
+      transparent 93%,
+      rgba(0, 150, 70, .055) 100%),
+    linear-gradient(180deg,
+      rgba(0, 150, 70, .065) 0%,
+      transparent 12%,
+      transparent 88%,
+      rgba(0, 160, 70, .075) 100%);
+
+  opacity: .38 !important;
+}
+
+/* Dark emerald perimeter glow */
+
+.claimed::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(34, 255, 145, .10),
+    inset 0 0 8px rgba(34, 255, 145, .025);
+
+  opacity: .4;
+}
+
+.claimed .value {
+  color: #35c985 !important;
+  text-shadow: 0 0 8px rgba(35, 180, 110, .12) !important;
+}
+
+.claimed .day {
+  background: linear-gradient(180deg, #10472c, #082719) !important;
+  color: #b7f5d0 !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(100, 200, 140, .08) !important;
+}
+
+.claimed .img {
+  filter:
+    drop-shadow(0 8px 8px rgba(0, 0, 0, .55)) drop-shadow(0 2px 4px rgba(20, 150, 80, .09)) !important;
+}
+
+.claimed .btnClaimed {
+  color: #39d493 !important;
+
+  background: linear-gradient(180deg,
+      #062417,
+      #03160d) !important;
+
+  border: 1px solid #0c6336 !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(55, 180, 120, .07),
+    inset 0 -3px 8px rgba(0, 0, 0, .32) !important;
+}
+
+@media (hover: hover) {
+  .claimed:hover {
+    border-color: #147442 !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(80, 180, 120, .06),
+      inset 0 -12px 24px rgba(0, 0, 0, .42),
+      0 0 9px rgba(20, 150, 75, .07) !important;
+  }
+
+  .claimed:hover::before {
+    opacity: .55 !important;
+  }
+}
+
+/* =================================================
+   DAY 2 - TODAY - GOLD EDGE LIGHT
+================================================= */
+
+.today {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  border-color: rgba(181, 129, 19, .85);
+
+  background:
+    radial-gradient(ellipse 90% 60% at 0% 50%,
+      rgba(255, 200, 40, .035),
+      transparent 65%),
+    radial-gradient(ellipse 90% 60% at 100% 50%,
+      rgba(255, 200, 40, .025),
+      transparent 65%),
+    linear-gradient(160deg, #070510 0%, #03020a 100%);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 235, 160, .07),
+    inset 0 -12px 24px rgba(0, 0, 0, .38),
+    0 0 0 1px rgba(245, 168, 0, .06),
+    0 0 7px rgba(245, 168, 0, .07);
+
+  animation: pulseGold 3.5s ease-in-out infinite;
+}
+
+/* Gold perimeter reflection */
+
+.today::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+
+  background:
+    linear-gradient(90deg,
+      rgba(255, 218, 90, .18) 0%,
+      transparent 7%,
+      transparent 93%,
+      rgba(255, 218, 90, .10) 100%),
+    linear-gradient(180deg,
+      rgba(255, 218, 90, .14) 0%,
+      transparent 12%,
+      transparent 88%,
+      rgba(255, 218, 90, .16) 100%);
+
+  opacity: .55;
+}
+
+/* Fine gold outline reflection */
+
+.today::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 218, 90, .15),
+    inset 0 0 8px rgba(255, 218, 90, .045);
+
+  opacity: .65;
+}
+
+.today .value {
+  color: #ffd04a;
+  text-shadow: 0 0 14px rgba(255, 196, 45, .22);
+}
+
+.today .day {
+  background: linear-gradient(180deg, #614713, #3a2908);
+  color: #ffe69a;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 225, 140, .15);
+}
+
+.today .img {
+  filter:
+    drop-shadow(0 9px 9px rgba(0, 0, 0, .55)) drop-shadow(0 3px 7px rgba(255, 190, 35, .22));
+}
+
+@media (hover: hover) {
+  .today:hover {
+    border-color: #e2ad28;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 235, 160, .10),
+      inset 0 -12px 24px rgba(0, 0, 0, .42),
+      0 0 12px rgba(245, 168, 0, .12);
+  }
+
+  .today:hover::before {
+    opacity: .8;
+  }
+}
+
+/* =================================================
+   DAY 7 - VIP - BLACK GOLD 3D EFFECT
+================================================= */
+
+.ultimate {
+  border-color: #a77a0c;
+
+  background:
+    radial-gradient(ellipse at 50% -8%,
+      rgba(255, 194, 45, .16),
+      transparent 62%),
+    linear-gradient(145deg,
+      rgba(150, 100, 8, .13),
+      transparent 45%),
+    linear-gradient(160deg,
+      #211804 0%,
+      #130e04 48%,
+      #080510 100%);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 224, 135, .16),
+    inset 0 -12px 24px rgba(0, 0, 0, .38),
+    0 0 14px rgba(245, 168, 0, .1);
+}
+
+.ultimate .value {
+  color: #ffc83d;
+  text-shadow: 0 0 12px rgba(255, 196, 45, .18);
+}
+
+.ultimate .day {
+  background: linear-gradient(180deg, #44320b, #2c2006);
+  color: #ffe08a;
+}
+
+.ultimate .btnLocked {
+  color: #ffc83d;
+  border-color: rgba(245, 168, 0, .4);
+
+  background: linear-gradient(180deg, #140f04, #090601);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 215, 100, .06),
+    inset 0 -3px 8px rgba(0, 0, 0, .3);
+}
+
+@media (hover: hover) {
+  .ultimate:hover {
+    border-color: #d6a322;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 224, 135, .18),
+      inset 0 -12px 24px rgba(0, 0, 0, .4),
+      0 0 22px rgba(245, 168, 0, .16);
+  }
+}
+
+/* ===== GOLD PULSE ===== */
+
+@keyframes pulseGold {
+
+  0%,
+  100% {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 223, 130, .07),
+      inset 0 -12px 24px rgba(0, 0, 0, .3),
+      0 0 7px rgba(245, 168, 0, .045);
+  }
+
+  50% {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 235, 160, .11),
+      inset 0 -12px 24px rgba(0, 0, 0, .3),
+      0 0 12px rgba(245, 168, 0, .09);
+  }
+}
+
+/* ===== DISPLAY HELPERS ===== */
+
+.onlyM {
+  display: inline;
+}
+
+.onlyD {
+  display: none;
+}
+
+/* ===== SMALL MOBILE ===== */
+
+@media (max-width: 359px) {
+
+  .grid>*,
+  .grid> :nth-child(n + 5) {
+    grid-column: span 6;
+  }
+
+  .grid> :last-child {
+    grid-column: span 12;
+  }
+}
+
+/* ===== MOBILE ===== */
+
+@media (min-width: 480px) {
+  .grid {
+    gap: 10px;
+  }
+
+  .card {
+    padding: 10px 8px;
+    gap: 4px;
+    border-radius: 14px;
+  }
+
+  .imgBox {
+    height: 66px;
+  }
+
+  .img {
+    max-height: 66px;
+  }
+
+  .imgCard {
+    max-height: 54px;
+  }
+
+  .day {
+    font-size: .78rem;
+  }
+
+  .tag {
+    font-size: .7rem;
+    padding: 3px 10px;
+  }
+
+  .tab {
+    font-size: .72rem;
+    padding: 3px 11px 4px;
+  }
+
+  .name {
+    font-size: .8rem;
+  }
+
+  .value {
+    font-size: 1.5rem;
+  }
+
+  .sub {
+    font-size: .68rem;
+  }
+
+  .btn,
+  .btnClaim {
+    height: 34px;
+    font-size: .76rem;
+    border-radius: 9px;
+  }
+}
+
+/* ===== TABLET ===== */
+
+@media (min-width: 768px) {
+  .grid {
+    gap: 14px;
+  }
+
+  .card {
+    padding: 14px 12px;
+    border-radius: 16px;
+  }
+
+  .imgBox {
+    height: 96px;
+  }
+
+  .img {
+    max-height: 96px;
+  }
+
+  .imgCard {
+    max-height: 76px;
+  }
+
+  .day {
+    font-size: .9rem;
+  }
+
+  .tag {
+    font-size: .8rem;
+  }
+
+  .tab {
+    font-size: .82rem;
+  }
+
+  .name {
+    font-size: 1rem;
+  }
+
+  .value {
+    font-size: 2rem;
+  }
+
+  .sub {
+    font-size: .85rem;
+  }
+
+  .btn,
+  .btnClaim {
+    height: 42px;
+    font-size: .95rem;
+    border-radius: 11px;
+  }
+}
+
+/* ===== DESKTOP ===== */
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(7, 1fr);
+    gap: 12px;
+  }
+
+  .grid>*,
+  .grid> :nth-child(n + 5),
+  .grid> :last-child {
+    grid-column: auto;
+  }
+
+  .card {
+    padding: 12px 10px;
+    border-radius: 16px;
+  }
+
+  .imgBox {
+    height: 84px;
+  }
+
+  .img {
+    max-height: 84px;
+  }
+
+  .imgCard {
+    max-height: 66px;
+  }
+
+  .day {
+    font-size: .8rem;
+  }
+
+  .tag {
+    font-size: .72rem;
+  }
+
+  .tab {
+    font-size: .78rem;
+  }
+
+  .name {
+    font-size: .92rem;
+  }
+
+  .value {
+    font-size: 1.75rem;
+  }
+
+  .sub {
+    font-size: .78rem;
+  }
+
+  .btn,
+  .btnClaim {
+    height: 38px;
+    font-size: .84rem;
+  }
+
+  .onlyM {
+    display: none;
+  }
+
+  .onlyD {
+    display: inline;
+  }
+}
+
+/* ===== ACCESSIBILITY ===== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .btnClaim::after,
+  .today {
+    animation: none;
+  }
+
+  .card,
+  .img,
+  .btnClaim {
+    transition: none;
+  }
+}
+
+/* ===== TODAY CARD — STRONG GOLD REFINEMENT ===== */
+
+.today {
+  border: 1px solid rgba(255, 195, 45, 0.75) !important;
+
+  background:
+    radial-gradient(ellipse at 50% 0%,
+      rgba(255, 190, 35, 0.12),
+      transparent 65%),
+    linear-gradient(160deg, #100d05 0%, #03020a 100%) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 220, 120, 0.12),
+    inset 0 -12px 24px rgba(0, 0, 0, 0.4),
+    0 0 12px rgba(245, 168, 0, 0.12) !important;
+}
+
+/* Gold reward value */
+.today .value {
+  color: #ffd04a !important;
+  text-shadow: 0 0 14px rgba(255, 196, 45, 0.28) !important;
+}
+
+/* Gold Day badge */
+.today .day {
+  background: linear-gradient(180deg, #755414, #463205) !important;
+  color: #ffe69a !important;
+  box-shadow: inset 0 1px 0 rgba(255, 225, 140, 0.18) !important;
+}
+
+/* Gold image reflection */
+.today .img {
+  filter:
+    drop-shadow(0 8px 9px rgba(0, 0, 0, 0.55)) drop-shadow(0 3px 7px rgba(255, 190, 35, 0.25)) !important;
+}
+
+/* Today tab */
+.today .tab {
+  color: #231500 !important;
+  background: linear-gradient(180deg, #ffd95a, #e9a000) !important;
+}
+
+/* Gold perimeter */
+.today::after {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 210, 75, 0.22),
+    inset 0 0 12px rgba(255, 190, 35, 0.07) !important;
+  opacity: 1 !important;
+}
+
+/* Hover */
+@media (hover: hover) {
+  .today:hover {
+    border-color: #ffcf45 !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 235, 160, 0.12),
+      inset 0 -12px 24px rgba(0, 0, 0, 0.4),
+      0 0 18px rgba(245, 168, 0, 0.18) !important;
+  }
+}

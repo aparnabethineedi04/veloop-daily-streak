@@ -1,0 +1,181 @@
+.wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: calc(10px + env(safe-area-inset-top)) 12px calc(28px + env(safe-area-inset-bottom));
+  background: #03020A;
+}
+
+.frame {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #03001B;
+  border: 1px solid #100D25;
+  box-shadow: none;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #05040D;
+}
+
+.top {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #070510 0%, #05040D 100%);
+  border: 1px solid #100D25;
+}
+
+/* ===== COME BACK TOMORROW DIVIDER ===== */
+
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  color: #AAA3C8;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(120, 105, 160, 0.08);
+}
+
+.divider span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.divider svg {
+  color: #8B5CF6;
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+.urgent {
+  color: var(--gold-soft);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: 14px;
+  font-size: 0.88rem;
+  color: var(--gold-soft);
+  background: #080612;
+  border: 1px solid #151126;
+}
+
+.logout {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: none;
+  border: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 80;
+  width: min(92vw, 420px);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  color: #FECACA;
+  background: #1B1030;
+  border: 1px solid rgba(248, 113, 113, 0.5);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.65);
+}
+
+.toast button {
+  margin-left: auto;
+  background: none;
+  border: 0;
+  color: inherit;
+  padding: 0;
+  line-height: 0;
+}
+
+@media (min-width: 768px) {
+  .wrap {
+    padding: 18px 24px 40px;
+  }
+
+  .panel {
+    padding: 16px;
+    gap: 14px;
+  }
+
+  .divider {
+    font-size: 0.95rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .wrap {
+    max-width: 1280px;
+    padding: 24px 28px 44px;
+  }
+
+  .frame {
+    gap: 0;
+    border-radius: 28px;
+    overflow: hidden;
+    border: 1px solid #100D25;
+    background: #03001B;
+    box-shadow: none;
+  }
+
+  .content {
+    padding: 16px 20px 18px;
+    gap: 16px;
+  }
+
+  .top {
+    display: grid;
+    grid-template-columns: 1.12fr 1fr;
+    grid-template-areas:
+      "hero ult"
+      "stats ult";
+    gap: 12px 18px;
+  }
+
+  .panel {
+    display: contents;
+  }
+}
