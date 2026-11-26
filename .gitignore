@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-node_modules
-.env
-dist
-*.log
-.DS_Store
-=======
 # Dependencies
 node_modules/
 
@@ -27,4 +20,3 @@ Thumbs.db
 
 # Local development
 .vscode/
->>>>>>> origin/main
