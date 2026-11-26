@@ -1,12 +1,17 @@
+<<<<<<< HEAD
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import icFlame from '../../assets/ic-flame.png';
 import icGem from '../../assets/ic-gem.png';
 import icCalendar from '../../assets/ic-calendar.png';
+=======
+import { ArrowLeft, CalendarCheck, Flame, Gem } from 'lucide-react';
+>>>>>>> origin/main
 import styles from './Header.module.css';
 
 export default function StreakHeader({ streak, gems, onBack }) {
   return (
+<<<<<<< HEAD
     <header className={styles.header}>
       {/* Mobile / tablet (matches the mobile design) */}
       <div className={styles.mobile}>
@@ -28,15 +33,43 @@ export default function StreakHeader({ streak, gems, onBack }) {
       <div className={styles.desktop}>
         <div className={styles.left}>
           <div className={styles.tile}><img src={icCalendar} alt="" /></div>
+=======
+    <header>
+      {/* Mobile / tablet */}
+      <div className={styles.mobile}>
+        <button className={styles.back} onClick={onBack} aria-label="Go back">
+          <ArrowLeft size={22} />
+        </button>
+        <h1 className={styles.mTitle}>
+          Daily Streak <Flame className={styles.flame} size={22} />
+        </h1>
+        <div className={styles.gems} aria-label="Gem balance">
+          <Gem className={styles.gemIcon} size={20} /> {gems}
+        </div>
+      </div>
+
+      {/* Desktop */}
+      <div className={styles.desktop}>
+        <div className={styles.left}>
+          <div className={styles.tile}><CalendarCheck size={24} /></div>
+>>>>>>> origin/main
           <div>
             <h1 className={styles.title}>Daily Streak</h1>
             <p className={styles.sub}>Login daily, maintain your streak, and unlock bigger rewards every day!</p>
           </div>
         </div>
         <div className={styles.badge}>
+<<<<<<< HEAD
           <img className={styles.badgeFlame} src={icFlame} alt="" />
           <div>
             <div className={styles.badgeTitle}><span className={styles.gold}>{streak.currentStreak} Day</span> Streak</div>
+=======
+          <Flame className={styles.badgeFlame} size={38} />
+          <div>
+            <div className={styles.badgeTitle}>
+              <span className={styles.gold}>{streak.currentStreak} Day</span> Streak
+            </div>
+>>>>>>> origin/main
             <div className={styles.badgeSub}>Keep it going!</div>
           </div>
         </div>

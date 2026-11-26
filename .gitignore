@@ -1,5 +1,30 @@
+<<<<<<< HEAD
 node_modules
 .env
 dist
 *.log
 .DS_Store
+=======
+# Dependencies
+node_modules/
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Build outputs
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Local development
+.vscode/
+>>>>>>> origin/main

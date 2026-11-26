@@ -7,7 +7,10 @@ const express = require('express');
 const { z } = require('zod');
 const { requireAuth } = require('../middleware/auth');
 const StreakCycle = require('../models/StreakCycle');
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 const router = express.Router();
 
 router.post('/rewind', requireAuth, async (req, res, next) => {

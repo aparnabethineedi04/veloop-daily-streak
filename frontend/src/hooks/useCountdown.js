@@ -1,11 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
+<<<<<<< HEAD
 import { formatCountdown, pad } from '../utils/format.js';
+=======
+import { formatCountdown } from '../utils/format.js';
+>>>>>>> origin/main
 
 /**
  * Visual countdown driven by SERVER timestamps.
  * We store (serverTime, performance.now()) when data arrives and advance with the
  * monotonic performance clock, so changing the device clock has no effect.
+<<<<<<< HEAD
  * At zero it only calls onZero() -> the page asks the backend; it never unlocks itself.
+=======
+ * When it reaches zero it only calls onZero() -> the page asks the backend; it never unlocks itself.
+>>>>>>> origin/main
  */
 export default function useCountdown(nextClaimAt, serverTime, onZero) {
   const anchor = useRef({ server: 0, perf: 0 });
@@ -38,10 +46,14 @@ export default function useCountdown(nextClaimAt, serverTime, onZero) {
     return () => clearInterval(id);
   }, [nextClaimAt, serverTime]);
 
+<<<<<<< HEAD
   const total = Math.max(0, Math.ceil(remaining / 1000));
   return {
     remainingMs: remaining,
     text: formatCountdown(remaining),
     parts: [pad(Math.floor(total / 3600)), pad(Math.floor((total % 3600) / 60)), pad(total % 60)],
   };
+=======
+  return { remainingMs: remaining, text: formatCountdown(remaining) };
+>>>>>>> origin/main
 }

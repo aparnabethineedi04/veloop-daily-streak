@@ -1,9 +1,14 @@
 import styles from './States.module.css';
+<<<<<<< HEAD
+=======
+import page from './DailyStreak.module.css';
+>>>>>>> origin/main
 
 const sk = (extra = '') => `${styles.sk} ${extra}`;
 
 export default function StreakSkeleton() {
   return (
+<<<<<<< HEAD
     <div className={styles.skPage} aria-busy="true" aria-label="Loading">
       <div className={sk(styles.skHeader)} />
       <div className={styles.skWrap}>
@@ -11,6 +16,14 @@ export default function StreakSkeleton() {
         <div className={styles.skTop}>
           <div className={styles.skCol}>
             <div className={sk(styles.skJourney)} />
+=======
+    <div className={page.page} aria-busy="true" aria-label="Loading">
+      <div className={styles.skWrap}>
+        <div className={sk(styles.skHeader)} />
+        <div className={styles.skTop}>
+          <div className={styles.skWrap}>
+            <div className={sk(styles.skHero)} />
+>>>>>>> origin/main
             <div className={sk(styles.skStats)} />
           </div>
           <div className={sk(styles.skUlt)} />
@@ -19,6 +32,10 @@ export default function StreakSkeleton() {
           {Array.from({ length: 7 }, (_, i) => <div key={i} className={sk(styles.skCard)} />)}
         </div>
         <div className={sk(styles.skInfo)} />
+<<<<<<< HEAD
+=======
+        <div className={sk(styles.skStats)} />
+>>>>>>> origin/main
       </div>
     </div>
   );

@@ -19,10 +19,13 @@ app.use(
   })
 );
 app.use(express.json({ limit: '10kb' }));
+<<<<<<< HEAD
 app.use('/api', (req, res, next) => {
   res.set('Cache-Control', 'no-store');
   next();
 });
+=======
+>>>>>>> origin/main
 app.use('/api', apiLimiter, routes);
 app.use(notFound);
 app.use(errorHandler);

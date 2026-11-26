@@ -61,8 +61,11 @@ async function getStreak(userId, ip) {
       claimable: state.claimable,
       nextClaimAt: state.nextClaimAt ? state.nextClaimAt.toISOString() : null,
       remainingMs: state.remainingMs,
+<<<<<<< HEAD
       // Only while a claim is available AND a streak is running: the moment it would be lost.
       expiresAt: state.claimable && state.currentStreak > 0 && state.missedAt ? state.missedAt.toISOString() : null,
+=======
+>>>>>>> origin/main
       cycleNumber: cycle ? cycle.cycleNumber : 1,
       lastReset: state.lastReset,
     },

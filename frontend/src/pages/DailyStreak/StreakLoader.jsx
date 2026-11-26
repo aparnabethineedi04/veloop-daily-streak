@@ -8,7 +8,10 @@ export default function StreakLoader() {
         <span className={styles.ring} />
         <img className={styles.logo} src={logo} alt="VELoop" />
       </div>
+<<<<<<< HEAD
       <div className={styles.loadTitle}>VELoop Rewards</div>
+=======
+>>>>>>> origin/main
       <div className={styles.loadText}>Loading your streak...</div>
     </div>
   );

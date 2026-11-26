@@ -9,6 +9,7 @@ export const getWallet = () => api.get('/wallet').then((r) => r.data);
  * The backend derives the day itself; nothing about reward/streak/user is sent.
  * The Idempotency-Key makes an accidental double submit return the same result.
  */
+<<<<<<< HEAD
 const uuid = () =>
   typeof crypto !== 'undefined' && crypto.randomUUID
     ? crypto.randomUUID()
@@ -16,3 +17,9 @@ const uuid = () =>
 
 export const claimStreak = () =>
   api.post('/daily-streak/claim', {}, { headers: { 'Idempotency-Key': uuid() } }).then((r) => r.data);
+=======
+export const claimStreak = () =>
+  api
+    .post('/daily-streak/claim', {}, { headers: { 'Idempotency-Key': crypto.randomUUID() } })
+    .then((r) => r.data);
+>>>>>>> origin/main

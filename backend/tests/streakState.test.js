@@ -78,9 +78,12 @@ test('card states while waiting: next day LOCKED with nextClaimAt', () => {
   assert.equal(cards[1].status, 'LOCKED'); assert.equal(cards[1].isNext, true);
   assert.equal(cards[1].nextClaimAt, at(24).toISOString());
 });
+<<<<<<< HEAD
 
 test('claimable day exposes the deadline (missedAt) so the UI can warn before the streak is lost', () => {
   const s = computeState({ cycle: cycle([1]), rewards, config, now: at(30) });
   assert.equal(s.mode, 'READY');
   assert.equal(s.missedAt.toISOString(), at(48).toISOString());
 });
+=======
+>>>>>>> origin/main
